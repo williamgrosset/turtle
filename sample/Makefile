@@ -1,8 +1,8 @@
 .phony all:
-all: sample inf args
+all: shell inf args
 
-sample: sample.c
-	gcc sample.c -lreadline -lhistory -ltermcap -o sample
+shell: shell.c
+	gcc shell.c -lreadline -lhistory -ltermcap -o shell
 
 inf: inf.c
 	gcc inf.c -o inf

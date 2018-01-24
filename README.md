@@ -26,4 +26,5 @@ gunzip -c p1s.tar.gz | tar xopf -
     + Execution arguments
     + `Total Background jobs: 2`
   + Background jobs must indicate to shell once terminated
+  + See `WNOHANG` opton for `waitpid()` system call
 + Test on Linux (ssh)

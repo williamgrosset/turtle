@@ -10,7 +10,6 @@ int main() {
 
 		char* reply = readline(prompt);
 		/* Note that readline strips away the final \n */
-		/* For Perl junkies, readline automatically chomps the line read */
 
 		if (!strcmp(reply, "quit")) {
 			bailout = 1;

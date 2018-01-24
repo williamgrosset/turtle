@@ -2,10 +2,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int
-main()
-{
-	const char* prompt = "shell> ";
+int main() {
+	const char* prompt = "SSI: ";
 
 	int bailout = 0;
 	while (!bailout) {
@@ -14,7 +12,7 @@ main()
 		/* Note that readline strips away the final \n */
 		/* For Perl junkies, readline automatically chomps the line read */
 
-		if (!strcmp(reply, "bye")) {
+		if (!strcmp(reply, "quit")) {
 			bailout = 1;
 		} else {
 			printf("\nYou said: %s\n\n", reply);
@@ -22,5 +20,5 @@ main()
 	
 		free(reply);
 	}
-	printf("Bye Bye\n");
+	printf("Carpe diem.\n");
 }

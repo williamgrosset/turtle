@@ -14,8 +14,9 @@ int main() {
   char cwd[1024];
   getcwd(cwd, sizeof(cwd));
 	char prompt[1024];
-  // SSI: cwd
-  strcpy(prompt, cwd);
+  strcat(prompt, "SSI: ");
+  strcat(cwd, " ");
+  strcat(prompt, cwd);
 
   // printf("Turtle failed while fetching current working directory.");
   // return 0;

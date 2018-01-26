@@ -12,15 +12,15 @@ gcc shell.c -lreadline -lhistory -ltermcap -o shell.o
 ```
 
 ### Assignment Requirements
-+ Basic Execution (5 marks):
++ **Step 1)** Basic Execution (5 marks):
   + `'SSI: <getcwd()> > ' + args`
   + Use `fork()` and `execvp()` to execute arbitrary commands (including options)
-+ Changing Directories (5 marks):
++ **Step 2)** Changing Directories (5 marks):
   + Create command `cd` (use `getcwd(()` and `chdir()`)
   + All edge cases of `cd`: `cd .., cd ./, cd , cd ~`
   + Get user's home directory via `getenv()`
   + Use system call `chdir()` to change current directory
-+ Background Execution (5 marks):
++ **Step 3)** Background Execution (5 marks):
   + Support arbitrary amount of background processes
   + Create command `bg`
     + e.g `bg cat foo.txt`
@@ -32,4 +32,4 @@ gcc shell.c -lreadline -lhistory -ltermcap -o shell.o
     + `Total Background jobs: 2`
   + Background jobs must indicate to shell once terminated
   + See `WNOHANG` opton for `waitpid()` system call
-+ Test on Linux (ssh)
++ Test on Linux (scp and ssh)

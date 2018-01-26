@@ -42,7 +42,11 @@ int main() {
     } else if (is_cd_cmd(reply)) {
       printf("\ncd cmd: %s\n\n", reply);
     } else {
-    // TODO: Tokenize string for execvp(char* file, char* argv[])
+      // TODO: Tokenize string for execvp(char* file, char* argv[])
+      // 1) Seperate options from main cmd
+      // TODO: Run general cmds
+      // 1) Use fork() to call the child process and execvp()
+      // 2) Use waitpid() in the parent until process is complete and resources are dealocated
       printf("\nGeneral said: %s\n\n", reply);
     }
 

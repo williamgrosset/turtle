@@ -15,7 +15,7 @@ int main() {
   getcwd(cwd, sizeof(cwd));
 	char prompt[1024];
   strcat(prompt, "SSI: ");
-  strcat(cwd, " ");
+  strcat(cwd, " > ");
   strcat(prompt, cwd);
 
   // printf("Turtle failed while fetching current working directory.");
@@ -27,7 +27,7 @@ int main() {
 		char* reply = readline(prompt);
 		/* Note that readline strips away the final \n */
 
-		if (!strcmp(reply, "quit")) {
+		if (!strcmp(reply, "quit") || !strcmp(reply, "exit")) {
 			sys_bailout = 1;
 		} else {
 			printf("\nYou said: %s\n\n", reply);

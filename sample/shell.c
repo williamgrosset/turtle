@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
 #include <readline/readline.h>
@@ -7,6 +8,14 @@
 
 int get_cmd_args() {
   return 0;
+}
+
+bool is_exit_cmd(char *cmd) {
+  return (!strcmp(cmd, "quit") || !strcmp(cmd, "exit"));
+}
+
+bool is_general_cmd(char *cmd) {
+  return true;
 }
 
 int main() {
@@ -18,18 +27,21 @@ int main() {
   strcat(cwd, " > ");
   strcat(prompt, cwd);
 
+  // TODO: Handle getcwd failure
   // printf("Turtle failed while fetching current working directory.");
   // return 0;
 
 	int sys_bailout = 0;
 	while (!sys_bailout) {
 
+		// readline strips away the final \n
 		char* reply = readline(prompt);
-		/* Note that readline strips away the final \n */
 
-		if (!strcmp(reply, "quit") || !strcmp(reply, "exit")) {
+		if (is_exit_cmd(reply)) {
 			sys_bailout = 1;
-		} else {
+		} else if (is_general_cmd(reply)) {
+			printf("\nGeneral cmd: %s\n\n", reply);
+    } else {
 			printf("\nYou said: %s\n\n", reply);
 		}
 	

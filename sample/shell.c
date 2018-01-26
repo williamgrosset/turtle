@@ -1,18 +1,33 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int main() {
-	const char* prompt = "SSI: ";
+int get_cmd_args() {
+  return 0;
+}
 
-	int bailout = 0;
-	while (!bailout) {
+int main() {
+  // const char* prompt = "SSI: ";
+  char cwd[1024];
+  getcwd(cwd, sizeof(cwd));
+	char prompt[1024];
+  // SSI: cwd
+  strcpy(prompt, cwd);
+
+  // printf("Turtle failed while fetching current working directory.");
+  // return 0;
+
+	int sys_bailout = 0;
+	while (!sys_bailout) {
 
 		char* reply = readline(prompt);
 		/* Note that readline strips away the final \n */
 
 		if (!strcmp(reply, "quit")) {
-			bailout = 1;
+			sys_bailout = 1;
 		} else {
 			printf("\nYou said: %s\n\n", reply);
 		}

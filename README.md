@@ -6,6 +6,11 @@
 gunzip -c p1s.tar.gz | tar xopf -
 ```
 
+### Temporary OS X compiling
+```bash
+gcc shell.c -lreadline -lhistory -ltermcap -o shell.o
+```
+
 ### Assignment Requirements
 + Basic Execution (5 marks):
   + `'SSI: <getcwd()> > ' + args`

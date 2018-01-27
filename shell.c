@@ -10,12 +10,18 @@ int get_cmd_args() {
   return 0;
 }
 
-bool is_exit_cmd(char *cmd) {
+bool is_exit_cmd(char* cmd) {
   return (!strcmp(cmd, "quit") || !strcmp(cmd, "exit"));
 }
 
-bool is_cd_cmd(char *cmd) {
+bool is_cd_cmd(char* cmd) {
   return false;
+}
+
+void tokenize_str(char* str) {
+  for (char* p = strtok(str," "); p != NULL; p = strtok(NULL, " ")) {
+    puts(p);
+  }
 }
 
 int main() {
@@ -33,6 +39,7 @@ int main() {
 
   int sys_bailout = 0;
   while (!sys_bailout) {
+    // TODO: Build prompt with updated cwd on every input (?)
 
     // readline strips away the final \n
     char* reply = readline(prompt);
@@ -42,33 +49,25 @@ int main() {
     } else if (is_cd_cmd(reply)) {
       printf("\ncd cmd: %s\n\n", reply);
     } else {
-      // TODO: Tokenize string for execvp(char* file, char* argv[])
-      // 1) Seperate options from main cmd
-      // TODO: Run general cmds
-      // 1) Use fork() to call the child process and execvp()
-      // 2) Use waitpid() in the parent until process is complete and resources are dealocated
-
-      // TODO: Tokenize input to run cmd
+      // TODO: Tokenize string for execvp(char* file, char* argv[]) (e.g execvp(args[0], args))
       printf("\nGeneral said: %s\n\n", reply);
 
-      int pid = fork();
+      tokenize_str(reply);
 
+      int pid = fork();
       if (pid == 0) {
-        printf("In child\n");
-        char *argv[3];
+        char* argv[3];
         argv[0] = "ls";
         argv[1] = "-la";
         argv[2] = NULL;
 
+        // TODO: Handle cmd error
         execvp("ls", argv);
       } else {
-        printf("In parent\n");
         waitpid(pid, NULL, 0);
-        printf("Child completed\n");
       }
     }
 
-    // Verify what free() does
     // Should we free(rebuild(prompt))?
     free(reply);
   }

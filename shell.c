@@ -18,12 +18,6 @@ bool is_cd_cmd(char* cmd) {
   return false;
 }
 
-void tokenize_str(char* str) {
-  for (char* p = strtok(str," "); p != NULL; p = strtok(NULL, " ")) {
-    puts(p);
-  }
-}
-
 int main() {
   // const char* prompt = "SSI: ";
   char cwd[1024];
@@ -52,17 +46,22 @@ int main() {
       // TODO: Tokenize string for execvp(char* file, char* argv[]) (e.g execvp(args[0], args))
       printf("\nGeneral said: %s\n\n", reply);
 
-      tokenize_str(reply);
-
       int pid = fork();
+
       if (pid == 0) {
-        char* argv[3];
-        argv[0] = "ls";
-        argv[1] = "-la";
-        argv[2] = NULL;
+        char *tokens[sizeof(reply)];
+        char *tok = NULL;
+        int i = 0;
+
+        tok = strtok(reply, " ");
+
+        while (tok != NULL) {
+          tokens[i++] = tok;
+          tok = strtok(NULL, " ");
+        }
 
         // TODO: Handle cmd error
-        execvp("ls", argv);
+        execvp(reply, tokens);
       } else {
         waitpid(pid, NULL, 0);
       }

@@ -47,9 +47,29 @@ int main() {
       // TODO: Run general cmds
       // 1) Use fork() to call the child process and execvp()
       // 2) Use waitpid() in the parent until process is complete and resources are dealocated
+
+      // TODO: Tokenize input to run cmd
       printf("\nGeneral said: %s\n\n", reply);
+
+      int pid = fork();
+
+      if (pid == 0) {
+        printf("In child\n");
+        char *argv[3];
+        argv[0] = "ls";
+        argv[1] = "-la";
+        argv[2] = NULL;
+
+        execvp("ls", argv);
+      } else {
+        printf("In parent\n");
+        waitpid(pid, NULL, 0);
+        printf("Child completed\n");
+      }
     }
 
+    // Verify what free() does
+    // Should we free(rebuild(prompt))?
     free(reply);
   }
 

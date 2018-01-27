@@ -38,18 +38,6 @@ int main() {
     // readline strips away the final \n
     char* reply = readline(prompt);
 
-    // Tokenize strings
-    char *tokens[sizeof(reply)];
-    char *tok = NULL;
-    int i = 0;
-
-    tok = strtok(reply, " ");
-
-    while (tok != NULL) {
-      tokens[i++] = tok;
-      tok = strtok(NULL, " ");
-    }
-
     if (is_exit_cmd(reply)) {
       sys_bailout = 1;
     } else if (is_cd_cmd(reply)) {
@@ -61,6 +49,21 @@ int main() {
 
       if (pid == 0) {
         // TODO: Handle cmd error
+        // Tokenize strings
+        char *tokens[sizeof(reply)];
+        char *tok = NULL;
+        int i = 0;
+
+        tok = strtok(reply, " ");
+
+        while (tok != NULL) {
+          tokens[i++] = tok;
+          tok = strtok(NULL, " ");
+        }
+
+        // TODO: Don't modify the reply variable
+        printf("%s\n", reply);
+
         execvp(reply, tokens);
       } else {
         waitpid(pid, NULL, 0);

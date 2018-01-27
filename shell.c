@@ -38,28 +38,28 @@ int main() {
     // readline strips away the final \n
     char* reply = readline(prompt);
 
+    // Tokenize strings
+    char *tokens[sizeof(reply)];
+    char *tok = NULL;
+    int i = 0;
+
+    tok = strtok(reply, " ");
+
+    while (tok != NULL) {
+      tokens[i++] = tok;
+      tok = strtok(NULL, " ");
+    }
+
     if (is_exit_cmd(reply)) {
       sys_bailout = 1;
     } else if (is_cd_cmd(reply)) {
       printf("\ncd cmd: %s\n\n", reply);
     } else {
-      // TODO: Tokenize string for execvp(char* file, char* argv[]) (e.g execvp(args[0], args))
       printf("\nGeneral said: %s\n\n", reply);
 
       int pid = fork();
 
       if (pid == 0) {
-        char *tokens[sizeof(reply)];
-        char *tok = NULL;
-        int i = 0;
-
-        tok = strtok(reply, " ");
-
-        while (tok != NULL) {
-          tokens[i++] = tok;
-          tok = strtok(NULL, " ");
-        }
-
         // TODO: Handle cmd error
         execvp(reply, tokens);
       } else {
@@ -67,7 +67,6 @@ int main() {
       }
     }
 
-    // Should we free(rebuild(prompt))?
     free(reply);
   }
 

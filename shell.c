@@ -24,6 +24,14 @@ bool is_cd_cmd(char* cmd) {
   return (!strcmp(cmd, "cd"));
 }
 
+bool is_bg_cmd(char* cmd) {
+  return (!strcmp(cmd, "bg"));
+}
+
+bool is_bglist_cmd(char* cmd) {
+  return (!strcmp(cmd, "bglist"));
+}
+
 int main() {
   char cwd[1024];
   getcwd(cwd, sizeof(cwd));
@@ -54,8 +62,10 @@ int main() {
       tok = strtok(NULL, " ");
     }
 
+    // exit/quit cmd
     if (is_exit_cmd(token)) {
       sys_bailout = 1;
+    // cd cmd
     } else if (is_cd_cmd(token)) {
         const char* dir = tokens[1];
         // Home environment
@@ -67,6 +77,13 @@ int main() {
           chdir(dir);
         }
         build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
+    // bg cmd
+    } else if (is_bg_cmd(token)) {
+      printf("bg cmd");
+    // bglist cmd
+    } else if (is_bglist_cmd(token)) {
+      printf("bglist cmd");
+    // general cmd
     } else {
       printf("\nGeneral said: %s\n\n", token);
 

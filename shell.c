@@ -41,6 +41,12 @@ int main() {
     if (is_exit_cmd(reply)) {
       sys_bailout = 1;
     } else if (is_cd_cmd(reply)) {
+      // TODO: Support the following:
+      // cd ~
+      // cd ..
+      // cd
+      // cd $HOME
+      // cd absolute/relative path (cd ../../foo; cd ./foo/bar)
       printf("\ncd cmd: %s\n\n", reply);
     } else {
       printf("\nGeneral said: %s\n\n", reply);

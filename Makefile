@@ -1,5 +1,5 @@
-.phony all:
-all: shell inf args
+.phony setup:
+setup: shell inf args
 
 shell: shell.c
 	# gcc shell.c -lreadline -lhistory -ltermcap -o shell
@@ -15,3 +15,6 @@ args: args.c
 .PHONY clean:
 clean:
 	-rm -rf *.o *.exe
+
+run: shell.o
+	./shell.o

@@ -25,6 +25,17 @@ void rm_bg_arg(char** args, int size) {
   }
 }
 
+void change_dirs(char* dir) {
+  // Home environment
+  if (dir == NULL || !strcmp(dir, "~")) {
+    // TODO: Handle error for no HOME env
+    chdir(getenv("HOME"));
+  } else {
+    // TODO: Error handling for nonexistent directory
+    chdir(dir);
+  }
+}
+
 int get_cmd_args() {
   return 0;
 }
@@ -75,16 +86,8 @@ int main() {
     if (is_exit_cmd(reply)) {          // exit/quit cmd
       sys_bailout = 1;
     } else if (is_cd_cmd(reply)) {     // cd cmd
-        // TODO: Put change_dir logic into seperate func
-        const char* dir = tokens[1];
-        // Home environment
-        if (dir == NULL || !strcmp(dir, "~")) {
-          // TODO: Handle error for no HOME env
-          chdir(getenv("HOME"));
-        } else {
-          // TODO: Error handling for nonexistent directory
-          chdir(dir);
-        }
+        char* dir = tokens[1];
+        change_dirs(dir);
         // TODO: Handle getcwd failure
         build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
     } else if (is_bg_cmd(reply)) {     // bg cmd
@@ -102,7 +105,6 @@ int main() {
     } else if (is_bglist_cmd(reply)) { // bglist cmd
       printf("bglist cmd");
     } else {                           // general cmd
-      // TODO: Put duplicated execvp logic into func w/ callback
       int pid = fork();
 
       if (pid == 0) {

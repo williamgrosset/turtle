@@ -56,13 +56,17 @@ int main() {
     if (is_exit_cmd(token)) {
       sys_bailout = 1;
     } else if (is_cd_cmd(token)) {
-      // TODO: Support the following:
-      // cd ~
-      // cd ..
-      // cd
-      // cd $HOME
-      // cd absolute/relative path (cd ../../foo; cd ./foo/bar)
-      printf("\ncd cmd: %s\n\n", token);
+        // Home environment
+        if (tokens[1] == NULL || !strcmp(tokens[1], "~")) {
+          printf("Go to HOME env...");
+        } else {}
+        // TODO: Support the following:
+        // cd ~
+        // cd ..
+        // cd
+        // cd $HOME
+        // cd absolute/relative path (cd ../../foo; cd ./foo/bar)
+        printf("\ncd cmd: %s\n\n", token);
     } else {
       printf("\nGeneral said: %s\n\n", token);
 

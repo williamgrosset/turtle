@@ -6,6 +6,12 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+struct bg_pro {
+  pid_t pid;
+  char command[1024];
+  struct bg_pro* next;
+};
+
 void build_prompt(char* prompt, char* cwd) {
   strcat(prompt, "SSI: ");
   strcat(cwd, " > ");
@@ -47,7 +53,6 @@ int main() {
     // readline() strips away the final \n
     char* reply = readline(prompt);
 
-    // TODO: Handle cmd error
     // Tokenize strings
     char* tokens[sizeof(reply)];
     char* token = malloc(strlen(reply) + 1);
@@ -62,11 +67,9 @@ int main() {
       tok = strtok(NULL, " ");
     }
 
-    // exit/quit cmd
-    if (is_exit_cmd(token)) {
+    if (is_exit_cmd(token)) {          // exit/quit cmd
       sys_bailout = 1;
-    // cd cmd
-    } else if (is_cd_cmd(token)) {
+    } else if (is_cd_cmd(token)) {     // cd cmd
         const char* dir = tokens[1];
         // Home environment
         if (dir == NULL || !strcmp(dir, "~")) {
@@ -77,21 +80,18 @@ int main() {
           chdir(dir);
         }
         build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
-    // bg cmd
-    } else if (is_bg_cmd(token)) {
+    } else if (is_bg_cmd(token)) {     // bg cmd
       printf("bg cmd");
-    // bglist cmd
-    } else if (is_bglist_cmd(token)) {
+    } else if (is_bglist_cmd(token)) { // bglist cmd
       printf("bglist cmd");
-    // general cmd
-    } else {
+    } else {                           // general cmd
       printf("\nGeneral said: %s\n\n", token);
 
       int pid = fork();
 
       if (pid == 0) {
         // TODO: Handle execvp error
-        execvp(token, tokens);
+        execvp(tokens[0], tokens);
       } else {
         waitpid(pid, NULL, 0);
       }

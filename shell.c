@@ -6,6 +6,12 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void build_prompt(char* prompt, char* cwd) {
+  strcat(prompt, "SSI: ");
+  strcat(cwd, " > ");
+  strcat(prompt, cwd);
+}
+
 int get_cmd_args() {
   return 0;
 }
@@ -23,9 +29,7 @@ int main() {
   char cwd[1024];
   getcwd(cwd, sizeof(cwd));
   char prompt[1024];
-  strcat(prompt, "SSI: ");
-  strcat(cwd, " > ");
-  strcat(prompt, cwd);
+  build_prompt(prompt, cwd);
 
   // TODO: Handle getcwd failure
   // printf("Turtle failed while fetching current working directory.");
@@ -68,12 +72,7 @@ int main() {
           chdir(dir);
           // TODO: Update SSI environment
         }
-        // TODO: Support the following:
-        // cd ~
-        // cd ..
-        // cd
-        // cd absolute/relative path (cd ../../foo; cd ./foo/bar)
-        printf("\ncd cmd: %s\n\n", token);
+        build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
     } else {
       printf("\nGeneral said: %s\n\n", token);
 

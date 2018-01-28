@@ -3,6 +3,7 @@
 
 ## TODO
 + Ignorecase for commands
++ Check chatroom for any spotted edge cases/questions
 
 ### Unpacking .tar.gz files
 ```bash

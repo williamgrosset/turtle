@@ -8,7 +8,7 @@
 
 struct bg_pro {
   pid_t pid;
-  char command[1024];
+  char cmd[1024];
   struct bg_pro* next;
 };
 
@@ -16,6 +16,13 @@ void build_prompt(char* prompt, char* cwd) {
   strcat(prompt, "SSI: ");
   strcat(cwd, " > ");
   strcat(prompt, cwd);
+}
+
+void rm_bg_arg(char** args, int size) {
+  int i = 0;
+  for (i = 0; i < size; i++) {
+    args[i] = args[i + 1];
+  }
 }
 
 int get_cmd_args() {
@@ -68,6 +75,7 @@ int main() {
     if (is_exit_cmd(reply)) {          // exit/quit cmd
       sys_bailout = 1;
     } else if (is_cd_cmd(reply)) {     // cd cmd
+        // TODO: Put change_dir logic into seperate func
         const char* dir = tokens[1];
         // Home environment
         if (dir == NULL || !strcmp(dir, "~")) {
@@ -77,14 +85,24 @@ int main() {
           // TODO: Error handling for nonexistent directory
           chdir(dir);
         }
+        // TODO: Handle getcwd failure
         build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
     } else if (is_bg_cmd(reply)) {     // bg cmd
-      printf("bg cmd");
+      int pid = fork();
+
+      if (pid == 0) {
+        // TODO: Handle execvp error
+        rm_bg_arg(tokens, sizeof(tokens));
+        printf("\n");
+        execvp(tokens[0], tokens);
+      } else {
+        // Append pid and cmd to bg_pro linked list
+
+      }
     } else if (is_bglist_cmd(reply)) { // bglist cmd
       printf("bglist cmd");
     } else {                           // general cmd
-      printf("\nGeneral said: %s\n\n", reply);
-
+      // TODO: Put duplicated execvp logic into func w/ callback
       int pid = fork();
 
       if (pid == 0) {
@@ -94,6 +112,8 @@ int main() {
         waitpid(pid, NULL, 0);
       }
     }
+
+    // TODO: Check background process termination
 
     memset(tokens, 0, sizeof(tokens));
     free(reply);

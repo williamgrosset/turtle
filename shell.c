@@ -59,7 +59,10 @@ int main() {
         // Home environment
         if (tokens[1] == NULL || !strcmp(tokens[1], "~")) {
           printf("Go to HOME env...");
-        } else {}
+        } else {
+          printf("Changing directories to %s\n", tokens[1]);
+          chdir(tokens[1]);
+        }
         // TODO: Support the following:
         // cd ~
         // cd ..

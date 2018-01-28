@@ -55,21 +55,19 @@ int main() {
 
     // Tokenize strings
     char* tokens[sizeof(reply)];
-    char* token = malloc(strlen(reply) + 1);
-    char* tok = NULL;
+    char* token = NULL;
     int i = 0;
 
-    strcpy(token, reply);
-    tok = strtok(token, " ");
+    token = strtok(reply, " ");
 
-    while (tok != NULL) {
-      tokens[i++] = tok;
-      tok = strtok(NULL, " ");
+    while (token != NULL) {
+      tokens[i++] = token;
+      token = strtok(NULL, " ");
     }
 
-    if (is_exit_cmd(token)) {          // exit/quit cmd
+    if (is_exit_cmd(reply)) {          // exit/quit cmd
       sys_bailout = 1;
-    } else if (is_cd_cmd(token)) {     // cd cmd
+    } else if (is_cd_cmd(reply)) {     // cd cmd
         const char* dir = tokens[1];
         // Home environment
         if (dir == NULL || !strcmp(dir, "~")) {
@@ -80,12 +78,12 @@ int main() {
           chdir(dir);
         }
         build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
-    } else if (is_bg_cmd(token)) {     // bg cmd
+    } else if (is_bg_cmd(reply)) {     // bg cmd
       printf("bg cmd");
-    } else if (is_bglist_cmd(token)) { // bglist cmd
+    } else if (is_bglist_cmd(reply)) { // bglist cmd
       printf("bglist cmd");
     } else {                           // general cmd
-      printf("\nGeneral said: %s\n\n", token);
+      printf("\nGeneral said: %s\n\n", reply);
 
       int pid = fork();
 
@@ -95,10 +93,9 @@ int main() {
       } else {
         waitpid(pid, NULL, 0);
       }
-      strcpy(token, "");
-      memset(tokens, 0, sizeof(tokens));
     }
 
+    memset(tokens, 0, sizeof(tokens));
     free(reply);
   }
 

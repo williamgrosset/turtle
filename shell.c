@@ -41,10 +41,6 @@ void change_dirs(char* dir) {
   }
 }
 
-int get_cmd_args() {
-  return 0;
-}
-
 bool is_exit_cmd(char* cmd) {
   return (!strcmp(cmd, "quit") || !strcmp(cmd, "exit"));
 }
@@ -63,20 +59,15 @@ bool is_bglist_cmd(char* cmd) {
 
 int main() {
   char cwd[1024];
-  getcwd(cwd, sizeof(cwd));
   char prompt[1024];
+  getcwd(cwd, sizeof(cwd));
   build_prompt(prompt, cwd);
 
-  // TODO: Handle getcwd failure
-  // printf("Turtle failed while fetching current working directory.");
-  // return 0;
-
-  int sys_bailout = 0;
-  int bg_proc_size = 0;
   struct bg_proc* head = NULL;
+  int bg_proc_size = 0;
+  int sys_bailout = 0;
 
   while (!sys_bailout) {
-    // readline() strips away the final \n
     char* reply = readline(prompt);
 
     // Tokenize strings

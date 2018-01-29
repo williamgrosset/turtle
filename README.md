@@ -2,6 +2,11 @@
 :turtle: A simple shell interpreter.
 
 ## TODO
++ `README` descriptions:
+  + gif (green/black terminal)
+  + Assignment overview
+  + Makefile usage
+  + System calls used
 + Ignorecase for commands
 + Check chatroom for any spotted edge cases/questions
 + Remove helper files
@@ -10,11 +15,6 @@
 ### Unpacking .tar.gz files
 ```bash
 gunzip -c p1s.tar.gz | tar xopf -
-```
-
-### Temporary OS X compiling
-```bash
-gcc shell.c -lreadline -lhistory -ltermcap -o shell.o
 ```
 
 ### Assignment Requirements

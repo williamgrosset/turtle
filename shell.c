@@ -191,5 +191,5 @@ int main() {
     free(reply);
   }
 
-  printf("Carpe diem.\n");
+  printf("Farewell.\n");
 }

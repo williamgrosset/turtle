@@ -111,7 +111,6 @@ int main() {
         int k = 0;
 
         // Note: -1 to avoid un-shifted value from rm_bg_arg()
-        // TODO: Fix size (2)
         for (k = 0; k < tokens_size - 1; k++) {
           strcat(cmd, tokens_cpy[k]);
         }
@@ -135,11 +134,17 @@ int main() {
         }
 
         bg_proc_size++;
+        memset(cmd, 0, sizeof(cmd));
       }
     } else if (is_bglist_cmd(reply)) { // bglist cmd
-      printf("bglist cmd");
-      // loop through bg_proc linked list and format/print items
-      // print size of bg_proc (bg_proc_size)
+      struct bg_proc* curr = head;
+
+      while (curr != NULL) {
+        printf("%i: %s\n", curr->pid, curr->cmd);
+        curr = curr->next;
+      }
+
+      printf("Total background jobs: %i.\n", bg_proc_size);
     } else {                           // general cmd
       pid_t pid = fork();
 

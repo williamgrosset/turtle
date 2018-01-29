@@ -60,6 +60,7 @@ bool is_bglist_cmd(char* cmd) {
 int main() {
   char cwd[1024];
   char prompt[1024];
+  strcpy(prompt, "");
   getcwd(cwd, sizeof(cwd));
   build_prompt(prompt, cwd);
 

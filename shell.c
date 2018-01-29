@@ -98,7 +98,6 @@ int main() {
     } else if (is_bg_cmd(reply)) {     // bg cmd
       char** tokens_cpy = tokens;
       rm_bg_arg(tokens_cpy, sizeof(tokens_cpy));
-      printf("%lu\n", sizeof(tokens_cpy));
 
       pid_t pid = fork();
 
@@ -156,7 +155,32 @@ int main() {
       }
     }
 
-    // TODO: Check background process termination
+    if (bg_proc_size > 0) {
+      pid_t ter = waitpid(0, NULL, WNOHANG);
+
+      if (ter > 0) {
+        if (head->pid == ter) {
+          printf("%i: %s has terminated.\n", head->pid, head->cmd);
+          head = head->next;
+          bg_proc_size--;
+        } else {
+          struct bg_proc* curr = head;
+          while (curr != NULL) {
+            if (curr->pid == ter) {
+              printf("%i: %s has terminated.\n", curr->pid, curr->cmd);
+              if (curr->next != NULL) {
+                curr->next = curr->next->next;
+              } else {
+                curr->next = NULL;
+              }
+              bg_proc_size--;
+              break;
+            }
+            curr = curr->next;
+          }
+        }
+      }
+    }
 
     memset(tokens, 0, sizeof(tokens));
     free(reply);

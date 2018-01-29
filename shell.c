@@ -108,11 +108,11 @@ int main() {
         printf("Command failed.\n");
         _Exit(3);
       } else {
-        // TODO: add item to linked list func (add_bg_proc)
         char cmd[1024];
         int k = 0;
 
         // -1 to avoid un-shifted value from rm_bg_arg()
+        // shift_arr()
         for (k = 0; k < tokens_size - 1; k++) {
           if (k != 0) strcat(cmd, " ");
           strcat(cmd, tokens_subset[k]);

@@ -1,9 +1,10 @@
 # turtle
 :turtle: A simple shell interpreter.
 
+![alt text](https://github.com/williamgrosset/turtle/blob/master/example.gif "Shell")
+
 ## TODO
 + `README` descriptions:
-  + gif (green/black terminal)
   + Assignment overview
   + Makefile usage
   + System calls used

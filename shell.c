@@ -104,8 +104,7 @@ int main() {
       sys_bailout = 1;
     // cd cmd
     } else if (is_cd_cmd(reply)) {
-      char* dir = tokens[1];
-      change_dirs(dir);
+      change_dirs(tokens[1]);
       build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
     // bg cmd
     } else if (is_bg_cmd(reply)) {
@@ -172,7 +171,6 @@ int main() {
       pid_t ter = waitpid(0, NULL, WNOHANG);
 
       if (ter > 0) {
-        // TODO: remove item from linked list func (rm_bg_proc)
         if (head->pid == ter) {
           printf("%i: %s has terminated.\n", head->pid, head->cmd);
           head = head->next;

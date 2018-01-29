@@ -7,7 +7,7 @@
 #include <readline/history.h>
 
 struct bg_proc {
-  int pid;
+  pid_t pid;
   char cmd[1024];
   struct bg_proc* next;
 };
@@ -100,7 +100,7 @@ int main() {
       rm_bg_arg(tokens_cpy, sizeof(tokens_cpy));
       printf("%lu\n", sizeof(tokens_cpy));
 
-      int pid = fork();
+      pid_t pid = fork();
 
       if (pid == 0) {
         // TODO: Handle execvp error
@@ -141,7 +141,7 @@ int main() {
       // loop through bg_proc linked list and format/print items
       // print size of bg_proc (bg_proc_size)
     } else {                           // general cmd
-      int pid = fork();
+      pid_t pid = fork();
 
       if (pid == 0) {
         // TODO: Handle execvp error

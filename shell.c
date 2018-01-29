@@ -111,6 +111,7 @@ int main() {
 
         // Note: -1 to avoid un-shifted value from rm_bg_arg()
         for (k = 0; k < tokens_size - 1; k++) {
+          if (k != 0) strcat(cmd, " ");
           strcat(cmd, tokens_cpy[k]);
         }
 

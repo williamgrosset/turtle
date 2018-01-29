@@ -180,7 +180,6 @@ int main() {
           if (curr != NULL && curr->pid == ter) {
             printf("%i: %s has terminated.\n", curr->pid, curr->cmd);
             head = curr->next;
-            free(curr);
           } else {
             while (curr != NULL && curr->pid != ter) {
               prev = curr;
@@ -188,8 +187,9 @@ int main() {
             }
             printf("%i: %s has terminated.\n", curr->pid, curr->cmd);
             prev->next = curr->next;
-            free(curr);
           }
+          free(curr);
+          free(prev);
         }
         bg_proc_size--;
       }

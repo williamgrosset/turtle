@@ -40,6 +40,13 @@ void change_dirs(char* dir) {
   }
 }
 
+void exec_cmd(char* cmd, char** args) {
+  printf("\n");
+  execvp(cmd, args);
+  printf("Command failed.\n");
+  _Exit(3);
+}
+
 void shift_arr(char* cmd, char** tokens, int size) {
   int k;
   for (k = 0; k < size; k++) {
@@ -110,10 +117,7 @@ int main() {
       if (pid == -1) {
         printf("Fork failed.\n");
       } else if (pid == 0) {
-        printf("\n");
-        execvp(tokens_subset[0], tokens_subset);
-        printf("Command failed.\n");
-        _Exit(3);
+        exec_cmd(tokens_subset[0], tokens_subset);
       } else {
         char cmd[1024];
         shift_arr(cmd, tokens_subset, tokens_size - 1);
@@ -157,9 +161,7 @@ int main() {
       if (pid == -1) {
         printf("Fork failed.\n");
       } else if (pid == 0) {
-        execvp(tokens[0], tokens);
-        printf("Command failed.\n");
-        _Exit(3);
+        exec_cmd(tokens[0], tokens);
       } else {
         waitpid(pid, NULL, 0);
       }

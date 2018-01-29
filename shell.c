@@ -85,13 +85,16 @@ int main() {
       tokens_size++;
     }
 
-    if (is_exit_cmd(reply)) {          // exit/quit cmd
+    // exit/quit cmd
+    if (is_exit_cmd(reply)) {
       sys_bailout = 1;
-    } else if (is_cd_cmd(reply)) {     // cd cmd
+    // cd cmd
+    } else if (is_cd_cmd(reply)) {
       char* dir = tokens[1];
       change_dirs(dir);
       build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
-    } else if (is_bg_cmd(reply)) {     // bg cmd
+    // bg cmd
+    } else if (is_bg_cmd(reply)) {
       char** tokens_subset = tokens;
       rm_bg_arg(tokens_subset, sizeof(tokens_subset));
 
@@ -105,6 +108,7 @@ int main() {
         printf("Command failed.\n");
         _Exit(3);
       } else {
+        // TODO: add item to linked list func (add_bg_proc)
         char cmd[1024];
         int k = 0;
 
@@ -116,8 +120,8 @@ int main() {
 
         if (bg_proc_size == 0) {
           struct bg_proc* proc = NULL;
-          proc = malloc(sizeof(struct bg_proc));
 
+          proc = malloc(sizeof(struct bg_proc));
           proc->pid = pid;
           strcpy(proc->cmd, cmd);
           head = proc;
@@ -126,8 +130,8 @@ int main() {
           while (curr->next != NULL) {
             curr = curr->next;
           }
-          curr->next = malloc(sizeof(struct bg_proc));
 
+          curr->next = malloc(sizeof(struct bg_proc));
           curr->next->pid = pid;
           strcpy(curr->next->cmd, cmd);
           curr->next->next = NULL;
@@ -136,7 +140,8 @@ int main() {
         bg_proc_size++;
         memset(cmd, 0, sizeof(cmd));
       }
-    } else if (is_bglist_cmd(reply)) { // bglist cmd
+    // bglist cmd
+    } else if (is_bglist_cmd(reply)) {
       struct bg_proc* curr = head;
 
       while (curr != NULL) {
@@ -145,7 +150,8 @@ int main() {
       }
 
       printf("Total background jobs: %i.\n", bg_proc_size);
-    } else {                           // general cmd
+    // general cmd
+    } else {
       pid_t pid = fork();
 
       if (pid == -1) {
@@ -159,10 +165,12 @@ int main() {
       }
     }
 
+    // Terminate any completed background processes
     if (bg_proc_size > 0) {
       pid_t ter = waitpid(0, NULL, WNOHANG);
 
       if (ter > 0) {
+        // TODO: remove item from linked list func (rm_bg_proc)
         if (head->pid == ter) {
           printf("%i: %s has terminated.\n", head->pid, head->cmd);
           head = head->next;

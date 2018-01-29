@@ -11,6 +11,7 @@
 + Check chatroom for any spotted edge cases/questions
 + Remove helper files
 + `cmd_identifier` for helper functions ?
++ Submit `p1.tar.gz` (w/o `.o` files)
 
 ### Unpacking .tar.gz files
 ```bash

@@ -42,19 +42,19 @@ void change_dirs(char* dir) {
 }
 
 bool is_exit_cmd(char* cmd) {
-  return (!strcmp(cmd, "quit") || !strcmp(cmd, "exit"));
+  return strcmp(cmd, "quit") == 0 || strcmp(cmd, "exit") == 0;
 }
 
 bool is_cd_cmd(char* cmd) {
-  return (!strcmp(cmd, "cd"));
+  return strcmp(cmd, "cd") == 0;
 }
 
 bool is_bg_cmd(char* cmd) {
-  return (!strcmp(cmd, "bg"));
+  return strcmp(cmd, "bg") == 0;
 }
 
 bool is_bglist_cmd(char* cmd) {
-  return (!strcmp(cmd, "bglist"));
+  return strcmp(cmd, "bglist") == 0;
 }
 
 int main() {
@@ -116,6 +116,7 @@ int main() {
         if (bg_proc_size == 0) {
           struct bg_proc* proc = NULL;
           proc = malloc(sizeof(struct bg_proc));
+
           proc->pid = pid;
           strcpy(proc->cmd, cmd);
           head = proc;
@@ -124,8 +125,8 @@ int main() {
           while (curr->next != NULL) {
             curr = curr->next;
           }
-
           curr->next = malloc(sizeof(struct bg_proc));
+
           curr->next->pid = pid;
           strcpy(curr->next->cmd, cmd);
           curr->next->next = NULL;

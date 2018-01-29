@@ -162,23 +162,25 @@ int main() {
         if (head->pid == ter) {
           printf("%i: %s has terminated.\n", head->pid, head->cmd);
           head = head->next;
-          bg_proc_size--;
         } else {
           struct bg_proc* curr = head;
-          while (curr != NULL) {
-            if (curr->pid == ter) {
-              printf("%i: %s has terminated.\n", curr->pid, curr->cmd);
-              if (curr->next != NULL) {
-                curr->next = curr->next->next;
-              } else {
-                curr->next = NULL;
-              }
-              bg_proc_size--;
-              break;
+          struct bg_proc* prev = head;
+
+          if (curr != NULL && curr->pid == ter) {
+            printf("%i: %s has terminated.\n", curr->pid, curr->cmd);
+            head = curr->next;
+            free(curr);
+          } else {
+            while (curr != NULL && curr->pid != ter) {
+              prev = curr;
+              curr = curr->next;
             }
-            curr = curr->next;
+            printf("%i: %s has terminated.\n", curr->pid, curr->cmd);
+            prev->next = curr->next;
+            free(curr);
           }
         }
+        bg_proc_size--;
       }
     }
 

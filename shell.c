@@ -28,11 +28,16 @@ void rm_bg_arg(char** args, int size) {
 void change_dirs(char* dir) {
   // Home environment
   if (dir == NULL || !strcmp(dir, "~")) {
-    // TODO: Handle error for no HOME env
-    chdir(getenv("HOME"));
+    char* home_dir = getenv("HOME");
+    if (home_dir == NULL) {
+      perror("No home directory available.\n");
+    } else {
+      chdir(home_dir);
+    }
   } else {
-    // TODO: Error handling for nonexistent directory
-    chdir(dir);
+    if (chdir(dir) == -1) {
+      printf("Directory not found.\n");
+    }
   }
 }
 

@@ -190,7 +190,6 @@ int main() {
             prev->next = curr->next;
           }
           free(curr);
-          free(prev);
         }
         bg_proc_size--;
       }

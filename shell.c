@@ -89,26 +89,26 @@ int main() {
     } else if (is_cd_cmd(reply)) {     // cd cmd
       char* dir = tokens[1];
       change_dirs(dir);
-      // TODO: Handle getcwd failure
       build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
     } else if (is_bg_cmd(reply)) {     // bg cmd
-      char** tokens_cpy = tokens;
-      rm_bg_arg(tokens_cpy, sizeof(tokens_cpy));
+      char** tokens_subset = tokens;
+      rm_bg_arg(tokens_subset, sizeof(tokens_subset));
 
       pid_t pid = fork();
 
       if (pid == 0) {
-        // TODO: Handle execvp error
         printf("\n");
-        execvp(tokens_cpy[0], tokens_cpy);
+        execvp(tokens_subset[0], tokens_subset);
+        printf("Command unknown.\n");
+        _Exit(3);
       } else {
         char cmd[1024];
         int k = 0;
 
-        // Note: -1 to avoid un-shifted value from rm_bg_arg()
+        // -1 to avoid un-shifted value from rm_bg_arg()
         for (k = 0; k < tokens_size - 1; k++) {
           if (k != 0) strcat(cmd, " ");
-          strcat(cmd, tokens_cpy[k]);
+          strcat(cmd, tokens_subset[k]);
         }
 
         if (bg_proc_size == 0) {
@@ -142,11 +142,13 @@ int main() {
 
       printf("Total background jobs: %i.\n", bg_proc_size);
     } else {                           // general cmd
+      // TODO: Handle failure to fork
       pid_t pid = fork();
 
       if (pid == 0) {
-        // TODO: Handle execvp error
         execvp(tokens[0], tokens);
+        printf("Command unknown.\n");
+        _Exit(3);
       } else {
         waitpid(pid, NULL, 0);
       }

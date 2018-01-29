@@ -40,6 +40,14 @@ void change_dirs(char* dir) {
   }
 }
 
+void shift_arr(char* cmd, char** tokens, int size) {
+  int k;
+  for (k = 0; k < size; k++) {
+    if (k != 0) strcat(cmd, " ");
+    strcat(cmd, tokens[k]);
+  }
+}
+
 bool is_exit_cmd(char* cmd) {
   return strcasecmp(cmd, "quit") == 0 || strcasecmp(cmd, "exit") == 0;
 }
@@ -108,14 +116,7 @@ int main() {
         _Exit(3);
       } else {
         char cmd[1024];
-        int k = 0;
-
-        // -1 to avoid un-shifted value from rm_bg_arg()
-        // shift_arr()
-        for (k = 0; k < tokens_size - 1; k++) {
-          if (k != 0) strcat(cmd, " ");
-          strcat(cmd, tokens_subset[k]);
-        }
+        shift_arr(cmd, tokens_subset, tokens_size - 1);
 
         if (bg_proc_size == 0) {
           struct bg_proc* proc = NULL;

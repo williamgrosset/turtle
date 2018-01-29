@@ -96,10 +96,12 @@ int main() {
 
       pid_t pid = fork();
 
-      if (pid == 0) {
+      if (pid == -1) {
+        printf("Fork failed.\n");
+      } else if (pid == 0) {
         printf("\n");
         execvp(tokens_subset[0], tokens_subset);
-        printf("Command unknown.\n");
+        printf("Command failed.\n");
         _Exit(3);
       } else {
         char cmd[1024];
@@ -142,12 +144,13 @@ int main() {
 
       printf("Total background jobs: %i.\n", bg_proc_size);
     } else {                           // general cmd
-      // TODO: Handle failure to fork
       pid_t pid = fork();
 
-      if (pid == 0) {
+      if (pid == -1) {
+        printf("Fork failed.\n");
+      } else if (pid == 0) {
         execvp(tokens[0], tokens);
-        printf("Command unknown.\n");
+        printf("Command failed.\n");
         _Exit(3);
       } else {
         waitpid(pid, NULL, 0);

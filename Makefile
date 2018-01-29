@@ -2,10 +2,7 @@
 setup: shell
 
 shell: shell.c
-	# gcc shell.c -lreadline -lhistory -ltermcap -o shell
-	gcc shell.c -lreadline -ltermcap -o shell.o
-
-	#gcc shell.c -lreadline -lhistory -ltermcap -o shell
+	gcc shell.c -lreadline -o shell.o
 
 run: shell.o
 	./shell.o

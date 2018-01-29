@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <readline/readline.h>
-#include <readline/history.h>
 
 struct bg_proc {
   pid_t pid;

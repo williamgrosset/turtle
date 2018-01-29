@@ -42,19 +42,19 @@ void change_dirs(char* dir) {
 }
 
 bool is_exit_cmd(char* cmd) {
-  return strcmp(cmd, "quit") == 0 || strcmp(cmd, "exit") == 0;
+  return strcasecmp(cmd, "quit") == 0 || strcasecmp(cmd, "exit") == 0;
 }
 
 bool is_cd_cmd(char* cmd) {
-  return strcmp(cmd, "cd") == 0;
+  return strcasecmp(cmd, "cd") == 0;
 }
 
 bool is_bg_cmd(char* cmd) {
-  return strcmp(cmd, "bg") == 0;
+  return strcasecmp(cmd, "bg") == 0;
 }
 
 bool is_bglist_cmd(char* cmd) {
-  return strcmp(cmd, "bglist") == 0;
+  return strcasecmp(cmd, "bglist") == 0;
 }
 
 int main() {

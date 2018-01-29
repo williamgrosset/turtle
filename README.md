@@ -14,10 +14,27 @@
 + `cmd_identifier` for helper functions ?
 + Submit `p1.tar.gz` (w/o `.o` files)
 
-### Unpacking .tar.gz files
-```bash
-gunzip -c p1s.tar.gz | tar xopf -
+## Overview
+This projct was an assignment for the [Operating Systems](https://github.com/williamgrosset/turtle/blob/master/csc360_a1.pdf) class at the University of Victoria. The purpose of the project is to learn
+
+### Usage
+#### Compile
 ```
+make setup
+```
+
+#### Run shell
+```
+make run
+```
+
+#### Clean build
+```
+make clean
+```
+
+### Commands
+This simple shell supports basic execution, changing directories, and background processes. To create a background process, run `bg cmd args`. To view running background processes, run `bglist`. Neither `bg`, `bglist`, or `cd` commands are case-sensitive.
 
 ### Assignment Requirements
 + **Step 1)** Basic Execution (5 marks):

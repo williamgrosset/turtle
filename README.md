@@ -4,6 +4,8 @@
 ## TODO
 + Ignorecase for commands
 + Check chatroom for any spotted edge cases/questions
++ Remove helper files
++ `cmd_identifier` for helper functions ?
 
 ### Unpacking .tar.gz files
 ```bash

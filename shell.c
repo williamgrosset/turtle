@@ -6,10 +6,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-struct bg_pro {
-  pid_t pid;
+struct bg_proc {
+  int pid;
   char cmd[1024];
-  struct bg_pro* next;
+  struct bg_proc* next;
 };
 
 void build_prompt(char* prompt, char* cwd) {
@@ -67,6 +67,9 @@ int main() {
   // return 0;
 
   int sys_bailout = 0;
+  int bg_proc_size = 0;
+  struct bg_proc* head = NULL;
+
   while (!sys_bailout) {
     // readline() strips away the final \n
     char* reply = readline(prompt);
@@ -74,6 +77,7 @@ int main() {
     // Tokenize strings
     char* tokens[sizeof(reply)];
     char* token = NULL;
+    int tokens_size = 0;
     int i = 0;
 
     token = strtok(reply, " ");
@@ -81,29 +85,61 @@ int main() {
     while (token != NULL) {
       tokens[i++] = token;
       token = strtok(NULL, " ");
+      tokens_size++;
     }
 
     if (is_exit_cmd(reply)) {          // exit/quit cmd
       sys_bailout = 1;
     } else if (is_cd_cmd(reply)) {     // cd cmd
-        char* dir = tokens[1];
-        change_dirs(dir);
-        // TODO: Handle getcwd failure
-        build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
+      char* dir = tokens[1];
+      change_dirs(dir);
+      // TODO: Handle getcwd failure
+      build_prompt(strcpy(prompt, ""), getcwd(cwd, sizeof(cwd)));
     } else if (is_bg_cmd(reply)) {     // bg cmd
+      char** tokens_cpy = tokens;
+      rm_bg_arg(tokens_cpy, sizeof(tokens_cpy));
+      printf("%lu\n", sizeof(tokens_cpy));
+
       int pid = fork();
 
       if (pid == 0) {
         // TODO: Handle execvp error
-        rm_bg_arg(tokens, sizeof(tokens));
         printf("\n");
-        execvp(tokens[0], tokens);
+        execvp(tokens_cpy[0], tokens_cpy);
       } else {
-        // Append pid and cmd to bg_pro linked list
+        char cmd[1024];
+        int k = 0;
 
+        // Note: -1 to avoid un-shifted value from rm_bg_arg()
+        // TODO: Fix size (2)
+        for (k = 0; k < tokens_size - 1; k++) {
+          strcat(cmd, tokens_cpy[k]);
+        }
+
+        if (bg_proc_size == 0) {
+          struct bg_proc* proc = NULL;
+          proc = malloc(sizeof(struct bg_proc));
+          proc->pid = pid;
+          strcpy(proc->cmd, cmd);
+          head = proc;
+        } else {
+          struct bg_proc* curr = head;
+          while (curr->next != NULL) {
+            curr = curr->next;
+          }
+
+          curr->next = malloc(sizeof(struct bg_proc));
+          curr->next->pid = pid;
+          strcpy(curr->next->cmd, cmd);
+          curr->next->next = NULL;
+        }
+
+        bg_proc_size++;
       }
     } else if (is_bglist_cmd(reply)) { // bglist cmd
       printf("bglist cmd");
+      // loop through bg_proc linked list and format/print items
+      // print size of bg_proc (bg_proc_size)
     } else {                           // general cmd
       int pid = fork();
 

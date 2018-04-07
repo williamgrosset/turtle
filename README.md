@@ -1,6 +1,4 @@
 # turtle
-:turtle: A simple shell interpreter.
-
 ![alt text](https://github.com/williamgrosset/turtle/blob/master/example.gif "Shell")
 
 ## Overview
